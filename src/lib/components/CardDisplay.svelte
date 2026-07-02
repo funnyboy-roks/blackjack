@@ -16,7 +16,7 @@
     };
 
     const isRed = () => card && (card.suit === 'diamonds' || card.suit === 'hearts');
-    const Icon = $derived(card ? suitMap[card.suit] : FileQuestionMark);
+    const Icon = $derived(card ? suitMap[card.suit] : undefined);
 
     const cardImage = $derived(card && card.suit[0].toUpperCase() + card.value);
 </script>
