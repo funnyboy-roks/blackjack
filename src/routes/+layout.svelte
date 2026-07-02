@@ -1,9 +1,9 @@
 <script lang="ts">
-	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+    import './layout.css';
+    import favicon from '$lib/assets/favicon.svg';
     import { ModeWatcher } from 'mode-watcher';
 
-	const { children } = $props();
+    const { children } = $props();
 </script>
 
 <ModeWatcher />

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import NewGame from '$lib/components/NewGame.svelte';
+    import NewGame from '$lib/components/NewGame.svelte';
 
     import { Deck } from '$lib/deck';
-	import PlayerCard from '$lib/components/PlayerCard.svelte';
-	import { onMount } from 'svelte';
-	import { Button } from '$lib/components/ui/button';
-	import { Player } from '$lib/player.svelte';
-	import { getPlayerWinState, onPlayerAction, resetGame, type GameState } from '$lib/game';
+    import PlayerCard from '$lib/components/PlayerCard.svelte';
+    import { onMount } from 'svelte';
+    import { Button } from '$lib/components/ui/button';
+    import { Player } from '$lib/player.svelte';
+    import { getPlayerWinState, onPlayerAction, resetGame, type GameState } from '$lib/game';
 
     let playerNames = $state<string[]>(['foo', 'bar']);
 
@@ -19,7 +19,7 @@
     });
 
     const onstart = () => {
-        game.players = playerNames.map(name => new Player(name));
+        game.players = playerNames.map((name) => new Player(name));
         game.stage = 'play';
 
         resetGame(game);
@@ -32,11 +32,11 @@
 <div class="w-screen h-screen flex flex-col justify-center items-center gap-6 py-6">
     <h1 class="text-6xl">Blackjack</h1>
     {#if game.stage === 'new'}
-        <NewGame bind:players={playerNames} onstart={onstart} />
+        <NewGame bind:players={playerNames} {onstart} />
     {:else if game.stage === 'play' || game.stage === 'score'}
         <div class="grow w-full flex flex-col gap-4 items-center">
             <div>
-                {(game.turn === 'dealer' ? game.dealer : game.players[game.turn]).name}'s turn 
+                {(game.turn === 'dealer' ? game.dealer : game.players[game.turn]).name}'s turn
             </div>
             <PlayerCard
                 player={game.dealer}
@@ -49,10 +49,10 @@
                     <PlayerCard
                         {player}
                         turn={game.turn === i}
-                        onaction={action => onPlayerAction(game, action, i)}
+                        onaction={(action) => onPlayerAction(game, action, i)}
                         win={getPlayerWinState(game, player)}
                     />
-               {/each}
+                {/each}
             </div>
             {#if game.stage === 'score'}
                 <Button onclick={() => resetGame(game)}>Reset</Button>

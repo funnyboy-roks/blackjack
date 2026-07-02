@@ -1,18 +1,18 @@
 <script lang="ts">
     import type { Card } from '$lib/deck';
 
-	import Club from '@lucide/svelte/icons/club';
-	import Spade from '@lucide/svelte/icons/spade';
-	import Diamond from '@lucide/svelte/icons/diamond';
-	import Heart from '@lucide/svelte/icons/heart';
+    import Club from '@lucide/svelte/icons/club';
+    import Spade from '@lucide/svelte/icons/spade';
+    import Diamond from '@lucide/svelte/icons/diamond';
+    import Heart from '@lucide/svelte/icons/heart';
 
     const { card }: { card: Card | undefined } = $props();
 
-    const suitMap  = {
-        'clubs': Club, // '♧',
-        'spades': Spade,// '♤',
-        'diamonds': Diamond, // '♢',
-        'hearts': Heart, // '♡',
+    const suitMap = {
+        clubs: Club, // '♧',
+        spades: Spade, // '♤',
+        diamonds: Diamond, // '♢',
+        hearts: Heart, // '♡',
     };
 
     const isRed = () => card && (card.suit === 'diamonds' || card.suit === 'hearts');
@@ -25,12 +25,11 @@
     {#if card}
         <img src="/cards/{cardImage}.png" alt="{card.value} of {card.suit}" class="w-[2em]" />
         <span class="flex flex-row items-center">
-            <Icon size="1em" fill="currentColor" /> {card!.value}
+            <Icon size="1em" fill="currentColor" />
+            {card!.value}
         </span>
     {:else}
         <img src="/cards/Back_Red.png" alt="Hidden Card" class="w-[2em]" />
-        <span class="flex flex-row items-center">
-            Hidden
-        </span>
+        <span class="flex flex-row items-center"> Hidden </span>
     {/if}
 </span>

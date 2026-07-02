@@ -1,7 +1,7 @@
-import { Deck } from "./deck";
-import { Player, type PlayerAction } from "./player.svelte";
-import type { WinState } from "./types.svelte";
-import { sleep } from "./utils";
+import { Deck } from './deck';
+import { Player, type PlayerAction } from './player.svelte';
+import type { WinState } from './types.svelte';
+import { sleep } from './utils';
 
 // NOTE: this is not a class so we have full reactivity
 export interface GameState {
@@ -77,20 +77,26 @@ export const resetGame = (game: GameState) => {
 export const onPlayerAction = (game: GameState, action: PlayerAction, playerIndex: number) => {
     const player = game.players[playerIndex];
     switch (action) {
-        case 'hit': {
-            player.hand.push(game.deck.takeCard()!);
-            if (player.hasBusted()) {
+        case 'hit':
+            {
+                player.hand.push(game.deck.takeCard()!);
+                if (player.hasBusted()) {
+                    nextTurn(game);
+                }
+            }
+            break;
+        case 'stay':
+            {
                 nextTurn(game);
             }
-        }; break;
-        case 'stay': {
-            nextTurn(game);
-        }; break;
-        case 'double-down': {
-            player.hand.push(game.deck.takeCard()!);
-            // TODO: bets
-            nextTurn(game);
-        }; break;
+            break;
+        case 'double-down':
+            {
+                player.hand.push(game.deck.takeCard()!);
+                // TODO: bets
+                nextTurn(game);
+            }
+            break;
     }
 };
 
@@ -107,4 +113,3 @@ export const getPlayerWinState = (game: GameState, player: Player): WinState => 
 
     return player.finalValue() > game.dealer.finalValue() ? 'win' : 'lose';
 };
-

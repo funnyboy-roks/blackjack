@@ -12,7 +12,7 @@ export default defineConfig(
     globalIgnores([
         'src/lib/components/ui', // shadcn components
     ]),
-	includeIgnoreFile(gitignorePath),
+    includeIgnoreFile(gitignorePath),
     js.configs.recommended,
     ...ts.configs.recommended,
     ...svelte.configs['flat/recommended'],
@@ -77,5 +77,5 @@ export default defineConfig(
                 },
             ],
         },
-    },
+    }
 );

@@ -1,8 +1,8 @@
 export const cardSuits = ['clubs', 'spades', 'diamonds', 'hearts'] as const;
-export type Suit = typeof cardSuits[number];
+export type Suit = (typeof cardSuits)[number];
 
 export const cardValues = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'] as const;
-export type Value = typeof cardValues[number];
+export type Value = (typeof cardValues)[number];
 
 export interface Card {
     value: Value;
