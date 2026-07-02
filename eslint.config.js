@@ -1,0 +1,78 @@
+import prettier from 'eslint-config-prettier';
+import path from 'node:path';
+import js from '@eslint/js';
+import svelte from 'eslint-plugin-svelte';
+import { defineConfig, includeIgnoreFile } from 'eslint/config';
+import globals from 'globals';
+import ts from 'typescript-eslint';
+
+const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
+
+export default defineConfig(
+	includeIgnoreFile(gitignorePath),
+    js.configs.recommended,
+    ...ts.configs.recommended,
+    ...svelte.configs['flat/recommended'],
+    prettier,
+    ...svelte.configs['flat/prettier'],
+    {
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...globals.node,
+            },
+        },
+    },
+    {
+        files: ['**/*.svelte'],
+        languageOptions: {
+            parserOptions: {
+                parser: ts.parser,
+            },
+        },
+    },
+    {
+        ignores: [
+            'build/',
+            '.svelte-kit/',
+            'dist/',
+            'tailwind.config.ts',
+            'vite.config.ts.*',
+            'src/lib/shadcn/',
+            'docs/',
+            'drizle/',
+        ],
+    },
+    {
+        rules: {
+            camelcase: [
+                'error',
+                {
+                    ignoreImports: true,
+                },
+            ],
+            eqeqeq: 'error',
+            'no-useless-assignment': 'warn',
+            'consistent-return': 'error',
+            'dot-notation': 'error',
+            'no-unneeded-ternary': 'warn',
+            'object-shorthand': 'error',
+            'prefer-const': 'warn',
+            'prefer-destructuring': 'error',
+            'no-useless-rename': 'error',
+            'no-cond-assign': 'error',
+            '@typescript-eslint/no-unused-vars': [
+                'error', // Change to 'error' if you want it to be an error
+                {
+                    args: 'all',
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'all',
+                    caughtErrorsIgnorePattern: '^_',
+                    destructuredArrayIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                    ignoreRestSiblings: true,
+                },
+            ],
+        },
+    },
+);
