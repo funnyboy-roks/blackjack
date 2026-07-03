@@ -3,12 +3,12 @@
 
     import { Deck } from '$lib/deck';
     import PlayerCard from '$lib/components/PlayerCard.svelte';
-    import { onMount } from 'svelte';
     import { Button } from '$lib/components/ui/button';
     import { Player } from '$lib/player.svelte';
     import { getPlayerWinState, onPlayerAction, resetGame, type GameState } from '$lib/game';
+    import PlayerBetCard from '$lib/components/PlayerBetCard.svelte';
 
-    let playerNames = $state<string[]>(['foo', 'bar']);
+    let playerNames = $state<string[]>(['']);
 
     const game = $state<GameState>({
         stage: 'new',
@@ -20,19 +20,37 @@
 
     const onstart = () => {
         game.players = playerNames.map((name) => new Player(name));
-        game.stage = 'play';
+        game.stage = 'bet';
 
         resetGame(game);
     };
 
-    // TODO: Remove this (testing)
-    onMount(onstart);
+    const onbet = (player: Player, bet: number) => {
+        player.balance -= bet;
+        player.bet = bet;
+
+        // If every player has bet, then let's start
+        if (game.players.every(p => p.bet !== 0)) {
+            game.stage = 'play';
+        }
+    };
 </script>
 
 <div class="w-screen h-screen flex flex-col justify-center items-center gap-6 py-6">
     <h1 class="text-6xl">Blackjack</h1>
     {#if game.stage === 'new'}
         <NewGame bind:players={playerNames} {onstart} />
+    {:else if game.stage === 'bet'}
+        <div class="grow w-full flex flex-col gap-4 items-center">
+            <div>
+                Place your bets!
+            </div>
+            <div class="flex flex-row gap-4 w-full justify-center">
+                {#each game.players as player, i (i)}
+                    <PlayerBetCard {player} onbet={(bet) => onbet(player, bet)} />
+                {/each}
+            </div>
+        </div>
     {:else if game.stage === 'play' || game.stage === 'score'}
         <div class="grow w-full flex flex-col gap-4 items-center">
             <div>

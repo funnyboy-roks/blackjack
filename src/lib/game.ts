@@ -1,6 +1,6 @@
 import { Deck } from './deck';
 import { Player, type PlayerAction } from './player.svelte';
-import type { WinState } from './types.svelte';
+import type { WinState } from './types';
 import { sleep } from './utils';
 
 // NOTE: this is not a class so we have full reactivity
@@ -8,9 +8,29 @@ export interface GameState {
     dealer: Player;
     players: Player[];
     deck: Deck;
-    stage: 'new' | 'play' | 'score';
+    stage: 'new' | 'bet' | 'play' | 'score';
     turn: 'dealer' | number;
 }
+
+const payout = (game: GameState) => {
+    for (const player of game.players) {
+        switch (getPlayerWinState(game, player)) {
+            case 'win': {
+                player.balance += 2 * player.bet;
+            }; break;
+            case 'push': {
+                player.balance += player.bet;
+            }; break;
+            case 'blackjack': {
+                player.balance += player.bet + Math.ceil(player.bet * 1.5);
+            }; break;
+            case 'lose':
+            case undefined: { // undefined is not reachable, but just in case
+                // Do nothing, bet has already been subtracted
+            }; break;
+        }
+    }
+};
 
 const dealerTurn = async (game: GameState) => {
     while (true) {
@@ -22,6 +42,7 @@ const dealerTurn = async (game: GameState) => {
         game.dealer.hand.push(game.deck.takeCard()!);
     }
     game.stage = 'score';
+    payout(game);
 };
 
 const nextTurn = (game: GameState) => {
@@ -54,9 +75,10 @@ export const resetGame = (game: GameState) => {
     game.dealer = new Player('Dealer');
     for (const player of game.players) {
         player.hand = [];
+        player.bet = 0;
     }
     game.turn = 'dealer';
-    game.stage = 'play';
+    game.stage = 'bet';
 
     game.deck.shuffle();
 
@@ -69,6 +91,8 @@ export const resetGame = (game: GameState) => {
     for (const player of game.players) {
         player.hand.push(game.deck.takeCard()!);
     }
+
+    game.dealer.hand = [{ suit: 'clubs', value: 'A' }, { suit: 'spades', value: 'J'}]
 
     // switch to player 0
     nextTurn(game);
@@ -93,7 +117,9 @@ export const onPlayerAction = (game: GameState, action: PlayerAction, playerInde
         case 'double-down':
             {
                 player.hand.push(game.deck.takeCard()!);
-                // TODO: bets
+                if (player.balance < player.bet) throw 'Unreachable'; // enforced in UI
+                player.balance -= player.bet;
+                player.bet *= 2;
                 nextTurn(game);
             }
             break;

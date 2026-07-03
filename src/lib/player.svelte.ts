@@ -4,14 +4,14 @@ export type PlayerAction = 'hit' | 'stay' | 'double-down';
 
 export class Player {
     name: string;
-    hand: Card[];
+    hand: Card[] = $state([]);
     // balance in "chips"
-    balance: number;
+    balance: number = $state(100);
+    // bet for the current round
+    bet: number = $state(0);
 
     constructor(name: string) {
         this.name = name;
-        this.hand = $state([]);
-        this.balance = $state(0);
     }
 
     handValue(): { value: number; softValue: number | null } {
