@@ -92,8 +92,6 @@ export const resetGame = (game: GameState) => {
         player.hand.push(game.deck.takeCard()!);
     }
 
-    game.dealer.hand = [{ suit: 'clubs', value: 'A' }, { suit: 'spades', value: 'J'}]
-
     // switch to player 0
     nextTurn(game);
 };

@@ -41,7 +41,6 @@ export class Deck {
      * Take a card from the top of the deck
      */
     takeCard(): Card | undefined {
-        // return this.#cards.pop();
-        return this.#cards.splice(Math.floor(Math.random() * this.#cards.length), 1)[0];
+        return this.#cards.pop();
     }
 }
