@@ -92,6 +92,12 @@ export const resetGame = (game: GameState) => {
         player.hand.push(game.deck.takeCard()!);
     }
 
+    game.players[0].hand = [
+        { suit: 'diamonds', value: 'A' },
+        { suit: 'diamonds', value: 'A' },
+        { suit: 'diamonds', value: 5 },
+    ];
+
     // switch to player 0
     nextTurn(game);
 };

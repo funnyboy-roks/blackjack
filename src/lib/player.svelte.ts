@@ -24,6 +24,7 @@ export class Player {
                     {
                         if (hasAce) {
                             sum += 1; // Only one Ace can be 11, if we have more than one, then the second one _must_ be a 1
+                            if (softSum !== null) softSum += 1;
                         } else {
                             softSum = sum + 11;
                             sum += 1;

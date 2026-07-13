@@ -10,6 +10,10 @@
     const { players = $bindable<string[]>(), onstart }: { players: string[]; onstart: () => void } =
         $props();
 
+    const ensureLength = (i: number) => {
+        players[i] = players[i].slice(0, 30);
+    };
+
     const canStart = (): boolean => {
         return players.length > 0 && players.every((p) => p.length > 0);
     };
@@ -34,6 +38,7 @@
                             required
                             bind:value={players[i]}
                             class="grow"
+                            oninput={() => ensureLength(i)}
                         />
                         {#if players.length > 1}
                             <Tooltip.Provider>
