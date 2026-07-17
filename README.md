@@ -1,5 +1,8 @@
 # Blackjack
 
+> [!WARNING]
+> This site and code is no longer maintained.
+
 This is a simple blackjack game in your browser.
 
 ## Developing
